@@ -79,3 +79,4 @@ For example which piece of code in the Monolith made us to implement an internal
 
 * Using GRPC is recommended, also you can reason using other options(except REST).  
 
+> Assignment Estimated time: 7 - 10 hours.
