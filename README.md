@@ -48,11 +48,18 @@ Think about it, if a teacher sends this request: `Attend True student id: 1, cou
 ![db pooa](https://docs.google.com/drawings/d/e/2PACX-1vTAHiq34UGoWSFmmwEox8Pmfuyq12HMcque8oziAnvnbIL6VoSu2D04VruIcWOTANyb-ggXrJF4SLRT/pub?w=1576&h=1046)
 <sub>*[access diagram](https://docs.google.com/drawings/d/1D9_1H81qM_k5kU7j8H3UYpFJLCSdiShI6Hi8oNGeCjs/edit?usp=sharing)*</sub>  
 
-
 As you can see there are inevitable data dependencies between our services, especially on `user` table, with favor of JWT token we can just authorize users by the payload of JWT token, but in case of not using a JWT token, we had to contact the `user management` service for each user request and ask if the user is authorized or not, for example, if a student requests `Hi I am student with session id: X, can I take course: Y?` in `course management` service we have to ask `user management` service `Hi user management, is session id: X a valid user and is he a student?`.  
 
 In a real Microservice with tens of services, you can imagine how complex it would be to communicate and synchronize data.   
 
 ![masters of chaos](./images/chaos.webp)
 
-Highly recommend watching [this video on youtube](https://www.youtube.com/watch?v=CZ3wIuvmHeM) about Netflix Microservice Architecture.
+Highly recommend watching [this video on youtube](https://www.youtube.com/watch?v=CZ3wIuvmHeM) about Netflix Microservice Architecture.  
+
+And in the last section, you must specify any internal call between your services, we are going to use GRPC to communicate.  
+
+![design internal](https://docs.google.com/drawings/d/e/2PACX-1vTUpL4Eyl-XTZKNq84q92xZHcuOYEPADG1mQkzBuxCU-AjfdgIGWS_XOjDAQh9FyfmLOwxO5eQ4KGCo/pub?w=1415&h=799)
+<sub>*[access diagram](https://docs.google.com/drawings/d/1HYA063pqDlEzRXHppd3D1u6ELBFjnc83aebRoWoSke8/edit?usp=sharing)*</sub>  
+
+* Your design must have at least one internal call.  
+* Using GRPC is recommended, also you can reason using other options(except REST).  
