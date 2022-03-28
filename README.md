@@ -92,4 +92,16 @@ For example which piece of code in the Monolith made us to implement an internal
 
 
 # Summary
-Add the summary here.
+
+You are asked to migrate an existing monolith project to a microservice architecture, following these steps:
+1. Find or write a monolithic project with adequate complexity.
+2. Design a microservice architecture consisting of at least 3 microservices, each of which with a specific database (stateful microservices).
+3. Prepare a document for written details (markdown file).
+4. Create a diagram that indicates the services along with their interal and external api connections.
+
+
+### Project Constraints ###
+* Your design must have at least one internal GRPC call. 
+* Describe at a very high level the system's architecture, identifying the components/modules that will interact.
+* Work in groups of two or three to brainstorm several possible projects and architectures.
+* Be prepared to present your project proposals.
