@@ -6,7 +6,7 @@ An Introduction to Cloud Computing, Microservice Architecture, and Containerizat
 You are required to propose a software solution based on [Microservice architecture](https://smartbear.com/solutions/microservices/), document it all, and submit it for us.  
 
 Choose your **base project**, an old monolith project you are familiar with, big enough to be broken apart into smaller services, forming a micro service, note that you will create a minimal functionality application for each service([Minimum Viable Product](https://www.interaction-design.org/literature/article/minimum-viable-product-mvp-and-design-balancing-risk-to-gain-reward)), for example, for an identity management service, login in, and registration is enough, in other word if your base project is much bigger, you can just create essential services and not use the rest of the monolith application.  
-You can use existing codes you have written, the goal here is to **create more than 3 micro services**, in a minimal and simple way.  
+You can use existing codes you have written, the goal here is to **create at least 3 micro services**, in a minimal and simple way.  
 You can propose a **Monolith** that you or your teammates has worked on, or you can find any open source existing Monolith project written in any language.  
 Using the following projects is a **plus**:
 
