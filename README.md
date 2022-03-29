@@ -94,7 +94,7 @@ For example which piece of code in the Monolith made us to implement an internal
 # Summary
 
 You are asked to migrate an existing monolith project to a microservice architecture, following these steps:
-1. Find or write a monolithic project with adequate complexity.
+1. Find a monolithic project or write one from scratch with adequate complexity.
 2. Design a microservice architecture consisting of at least 3 microservices, each of which with a specific database (stateful microservices).
 3. Prepare a document for written details (markdown file).
 4. Create a diagram that indicates the services along with their interal and external api connections.
