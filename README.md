@@ -52,7 +52,7 @@ Swagger is an open source and standard API documentation tool, you can use any l
 Consider the `Pooya` panel, for students and teachers and staff users, this is a gigantic project, and we have to break it down into smaller services. Our first service is `User management` for issuing JWT tokens and registering. The second service is `Course management` for creating courses and adding students to courses. The third service is `Student attendance management` for marking students attendance in each course. And the last service is `food management` for adding meals and buying food.  
 
 ![microservice pooa](https://docs.google.com/drawings/d/e/2PACX-1vQ888AxTtVLAa4Zl2BmdrNDhGP7cakfbABJoM0qLah2cRq4c71ilakEw_DwAjWrhJPUf_NX7J5Jib7B/pub?w=1279&h=2034)
-<sub>*[access diagram](https://docs.google.com/drawings/d/1PF89Usn8z90N30fwD6SbfoFoWelLuc0EhWnR4t6Go8w/edit?usp=sharing)*</sub>  
+<sub>*[access diagram 1](https://docs.google.com/drawings/d/1PF89Usn8z90N30fwD6SbfoFoWelLuc0EhWnR4t6Go8w/edit?usp=sharing)*</sub>  
 
 As you can see this diagram is very top level and explains different services and user interactions.  
 
@@ -64,10 +64,10 @@ Each service **[has its own database](https://microservices.io/patterns/data/dat
 Think about it, if a teacher sends this request: `Attend True student id: 1, course id: 1`, how do the `Student attendance management` service know that the student is taking the course? or the course is real? the simplest way is to ask the `Course management` service every time with a message: `Hey course management, does this student: 1, taking this course: 1?`, or another way is to push changes in couser-student table to `Student attendance management` and replicate the database...  
 
 ![db pooa](https://docs.google.com/drawings/d/e/2PACX-1vTAHiq34UGoWSFmmwEox8Pmfuyq12HMcque8oziAnvnbIL6VoSu2D04VruIcWOTANyb-ggXrJF4SLRT/pub?w=1576&h=1046)
-<sub>*[access diagram](https://docs.google.com/drawings/d/1D9_1H81qM_k5kU7j8H3UYpFJLCSdiShI6Hi8oNGeCjs/edit?usp=sharing)*</sub>  
+<sub>*[access diagram 2](https://docs.google.com/drawings/d/1D9_1H81qM_k5kU7j8H3UYpFJLCSdiShI6Hi8oNGeCjs/edit?usp=sharing)*</sub>  
 
 Another example: 
-![db sample](./images/dbsample.jpeg)
+![db sample](./images/dbsample.jpeg)<sub>*[access diagram 3](https://docs.google.com/drawings/d/1D9_1H81qM_k5kU7j8H3UYpFJLCSdiShI6Hi8oNGeCjs/edit?usp=sharing)*</sub>
 
 As you can see there are inevitable data dependencies between our services, especially on `user` table, with favor of JWT token we can just authorize users by the payload of JWT token, but in case of not using a JWT token, we had to contact the `user management` service for each user request and ask if the user is authorized or not, for example, if a student requests `Hi I am student with session id: X, can I take course: Y?` in `course management` service we have to ask `user management` service `Hi user management, is session id: X a valid user and is he a student?`.  
 
@@ -80,7 +80,7 @@ Highly recommend watching [this video on youtube](https://www.youtube.com/watch?
 And in the last section, you must specify any internal call between your services, and specify the dependency that caused this action, also we are going to use [GRPC](https://grpc.io/) to communicate.  
 
 ![design internal](https://docs.google.com/drawings/d/e/2PACX-1vTUpL4Eyl-XTZKNq84q92xZHcuOYEPADG1mQkzBuxCU-AjfdgIGWS_XOjDAQh9FyfmLOwxO5eQ4KGCo/pub?w=1415&h=799)
-<sub>*[access diagram](https://docs.google.com/drawings/d/1HYA063pqDlEzRXHppd3D1u6ELBFjnc83aebRoWoSke8/edit?usp=sharing)*</sub>  
+<sub>*[access diagram 4](https://docs.google.com/drawings/d/1HYA063pqDlEzRXHppd3D1u6ELBFjnc83aebRoWoSke8/edit?usp=sharing)*</sub>  
 
 For example which piece of code in the Monolith made us to implement an internal GRPC call??  
 
@@ -95,13 +95,18 @@ For example which piece of code in the Monolith made us to implement an internal
 
 You are asked to migrate an existing monolith project to a microservice architecture, following these steps:
 1. Find a monolithic project or write one from scratch with adequate complexity.
-2. Design a microservice architecture consisting of at least 3 microservices, each of which with a specific database (stateful microservices).
+2. Design a microservice architecture consisting of at least 3 microservices, each of which with a specific non-trivial data storage component such as a database with at least a table (stateful microservices).
 3. Prepare a document for written details (markdown file).
-4. Create a diagram that indicates the services along with their interal and external api connections.
+4. Create a diagram that indicates the services along with their interal and external api connections. (similar to access diagram 4)
 
+### Documents expected details ###
+* Describe at a very high level the system's architecture, identifying the components/modules that will interact.
+* What is interesting about this project from a technical point of view?
 
 ### Project Constraints ###
-* Your design must have at least one internal GRPC call. 
-* Describe at a very high level the system's architecture, identifying the components/modules that will interact.
+
+* Your design must have at least one internal GRPC call.
 * Work in groups of two or three to brainstorm several possible projects and architectures.
 * Be prepared to present your project proposals.
+
+
