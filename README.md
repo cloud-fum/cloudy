@@ -17,9 +17,9 @@ Using the following projects is a **plus**:
  
 You must link your Monolith and explain its functionalities and its file structure, and how it works.  
   
-The process of turning a [Monolith to a Micro service](https://insights.sei.cmu.edu/blog/8-steps-for-migrating-existing-applications-to-microservices/) is very important and very complex, we are going to scratch the surface. The candidate files and classes that are going to be a micro service must be documented, for example you must specify which portion of the Monolith files and classes are going to be Service A, and which are going to be Service B.  
+The process of turning a [Monolith to a Micro service](https://insights.sei.cmu.edu/blog/8-steps-for-migrating-existing-applications-to-microservices/) is very important and very complex, we are going to scratch the surface. The candidate files and classes that are going to be a micro service must be documented, for example you must specify which portion of the Monolith files and classes are going to be Service A, and which are going to be Service B or if you are going to develop new code for a service you must specify it.  
 
-It does not matter what framework or programming language you are using, in fact in this section you are not required to implement anything, you must write down explicitly your **reasons** for [choosing these services](https://tanzu.vmware.com/content/blog/should-that-be-a-microservice-keep-these-six-factors-in-mind), each service portion of code from Monolith, your plan for extraction of microservice from monolith project, your future tools of work including git, web frameworks or documentation tools, your team members and [team work plans](https://stackoverflow.com/a/3000392/12131234).  
+It does not matter what framework or programming language you are using, in fact in this section you are not required to implement anything, you must write down explicitly 1.your **reasons** for [choosing these services](https://tanzu.vmware.com/content/blog/should-that-be-a-microservice-keep-these-six-factors-in-mind), 2.each service portion of code from Monolith, 3.your plan for extraction of microservice from monolith project(order of developing these services), your team members and [team work plans](https://stackoverflow.com/a/3000392/12131234)(choose one with more experienced as team leader).  
 
 *  Your Architecture must contain a user management service for issuing JWT tokens.  
 
@@ -32,7 +32,7 @@ Interesting feature of a JWT token is that when a remote service has the private
 You can use any open source library to generate or decode a JWT token, for example [JWT](https://github.com/golang-jwt/jwt).  
 You can also use libraries for popular frameworks such as [Django simple JWT](https://github.com/jazzband/djangorestframework-simplejwt).
 
-* Minimal functionality that works flawlessly is required, we want small and simple services, not a big and full featured application.  
+* Minimal functionality that works flawlessly is required, we want small and simple services, not a big and full featured application, for example sign up and obtain token endpoints for user management service.  
 
 * using diagrams is a good way to document your architecture, using [Google drawings](https://docs.google.com/drawings) or [Ascii flow](https://asciiflow.com/) is recommended.  
 
@@ -43,9 +43,7 @@ You can also use libraries for popular frameworks such as [Django simple JWT](ht
 
 > Note: A client side application is not counted as a service in this exercise. And you are not required to implement a client side application. Using Swagger is a minimum.    
 
-* No client side application is required, but suitable tools are required for testing, swagger is recommended.  
-
-Swagger is an open source and standard API documentation tool, you can use any library to generate documentation files, for example [Golang Gin swagger](https://github.com/swaggo/gin-swagger) or [Drf spectacular for Django rest framework](https://github.com/tfranzel/drf-spectacular).
+* For implementation in next phase, No client side application is forced, but suitable tools are required for testing, swagger or postman is recommended(you must put the last version of api documentation schema in the root of project if it is not auto generated).  
 
 * You must design with at least **three microservice in action**, you **must use an existing monolith** project as your base, reduce its features if its too big, or increase its features if its too small. You can later use the old code base too.  
 
@@ -66,8 +64,8 @@ Think about it, if a teacher sends this request: `Attend True student id: 1, cou
 ![db pooa](https://docs.google.com/drawings/d/e/2PACX-1vTAHiq34UGoWSFmmwEox8Pmfuyq12HMcque8oziAnvnbIL6VoSu2D04VruIcWOTANyb-ggXrJF4SLRT/pub?w=1576&h=1046)
 <sub>*[access diagram 2](https://docs.google.com/drawings/d/1D9_1H81qM_k5kU7j8H3UYpFJLCSdiShI6Hi8oNGeCjs/edit?usp=sharing)*</sub>  
 
-Another example: 
-![db sample](./images/dbsample.jpeg)<sub>*[access diagram 3](https://docs.google.com/drawings/d/1D9_1H81qM_k5kU7j8H3UYpFJLCSdiShI6Hi8oNGeCjs/edit?usp=sharing)*</sub>
+Another example: As you can see this is entity diagram of a tracking system and how it is broken down into different services.   
+![db sample](./images/dbsample.jpeg)
 
 As you can see there are inevitable data dependencies between our services, especially on `user` table, with favor of JWT token we can just authorize users by the payload of JWT token, but in case of not using a JWT token, we had to contact the `user management` service for each user request and ask if the user is authorized or not, for example, if a student requests `Hi I am student with session id: X, can I take course: Y?` in `course management` service we have to ask `user management` service `Hi user management, is session id: X a valid user and is he a student?`.  
 
@@ -78,11 +76,26 @@ In a real Microservice with tens of services, you can imagine how complex it wou
 Highly recommend watching [this video on youtube](https://www.youtube.com/watch?v=CZ3wIuvmHeM) about Netflix Microservice Architecture.  
 
 And in the last section, you must specify any internal call between your services, and specify the dependency that caused this action, also we are going to use [GRPC](https://grpc.io/) to communicate.  
+For example which piece of code in the Monolith made us to implement an internal GRPC call??  
+Dependency example:
+```
+    attendance-service --> course-service:
+        where: monolith/courses/models.py, class: Course
+        happened: monolith/attendance/views.py, class: AttendanceView
+        code: Courses.objects.get(id=course_id)
+        reason: imported and used
+        solution: GRPC
+    course-service --> user-management-service:
+        where: monolith/users/models.py, class: User
+        happened: monolith/courses/views.py, class: CourseView
+        code: Users.objects.get(id=student_id)
+        reason: must obtain user from database
+        solution: trust user_id from jwt token 
+```
 
 ![design internal](https://docs.google.com/drawings/d/e/2PACX-1vTUpL4Eyl-XTZKNq84q92xZHcuOYEPADG1mQkzBuxCU-AjfdgIGWS_XOjDAQh9FyfmLOwxO5eQ4KGCo/pub?w=1415&h=799)
-<sub>*[access diagram 4](https://docs.google.com/drawings/d/1HYA063pqDlEzRXHppd3D1u6ELBFjnc83aebRoWoSke8/edit?usp=sharing)*</sub>  
+<sub>*[access diagram 3](https://docs.google.com/drawings/d/1HYA063pqDlEzRXHppd3D1u6ELBFjnc83aebRoWoSke8/edit?usp=sharing)*</sub>  
 
-For example which piece of code in the Monolith made us to implement an internal GRPC call??  
 
 * Your design must have at least one internal call.  
 
@@ -94,10 +107,12 @@ For example which piece of code in the Monolith made us to implement an internal
 # Summary
 
 You are asked to migrate an existing monolith project to a microservice architecture, following these steps:
-1. Find a monolithic project or write one from scratch with adequate complexity.
+1. Find a monolithic project with adequate complexity.  
 2. Design a microservice architecture consisting of at least 3 microservices, each of which with a specific non-trivial data storage component such as a database with at least a table (stateful microservices).
-3. Prepare a document for written details (markdown file).
-4. Create a diagram that indicates the services along with their interal and external api connections. (similar to access diagram 4)
+3. Prepare a document for written details (markdown file).  
+4. Create a diagram for service entities similar to diagram 2 or the tracking system diagram.  
+5. Create a diagram that indicates the services along with their interal and external api connections. (similar to diagram 3)  
+6. Read this document and satisfy other requirements.  
 
 ### Documents expected details ###
 * Describe at a very high level the system's architecture, identifying the components/modules that will interact.
