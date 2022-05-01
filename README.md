@@ -81,7 +81,7 @@ Highly recommend watching [this video on youtube](https://www.youtube.com/watch?
 
 And in the last section, you must specify any internal call between your services, and specify the dependency that caused this action, also we are going to use [GRPC](https://grpc.io/) to communicate.  
 For example which piece of code in the Monolith made us to implement an internal GRPC call??  
-#### Dependency example:####
+#### Dependency example:
 
 ```
     attendance-service --> course-service:
